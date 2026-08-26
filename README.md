@@ -12,11 +12,10 @@ npm run dev
 生成生产静态文件：
 
 ```bash
-$env:NUXT_PUBLIC_SITE_URL = 'https://ioscert.moonc.love'
 npm run generate
 ```
 
-部署 `.output/public` 到 Nginx 或其他静态托管服务。设置真实域名后，生成的 `sitemap.xml` 才能用于搜索引擎收录。
+部署 `.output/public` 到 Nginx 或其他静态托管服务。构建产物会按 `room-web` 的配置自动包含 `sitemap.xml` 与 `robots.txt`。
 
 ## 安全边界
 

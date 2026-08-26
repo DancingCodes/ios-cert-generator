@@ -20,7 +20,7 @@ useHead({
 })
 
 onMounted(async () => {
-  forge.value = await import('node-forge')
+  forge.value = (await import('node-forge')).default
 })
 
 function download(name: string, data: BlobPart, type = 'application/octet-stream') {
@@ -121,3 +121,64 @@ async function generateP12() {
     <footer>iOS Cert Generator · 本地加密处理工具</footer>
   </main>
 </template>
+
+<style lang="scss">
+.page-shell { max-width: 1080px; margin: auto; padding: 0 28px 48px; }
+
+.site-header {
+  height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--line);
+}
+
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 700; color: #102333; }
+.brand-mark { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 9px; color: #fff; background: #125b7a; }
+.privacy-note { display: flex; align-items: center; gap: 6px; color: #557083; font-size: 13px; }
+
+.hero { max-width: 760px; padding: 70px 0 48px; }
+.eyebrow { margin: 0 0 12px; color: var(--teal); font-size: 12px; font-weight: 700; letter-spacing: 0; }
+.hero h1 { margin: 0 0 18px; color: #102333; font-size: clamp(34px, 5vw, 56px); line-height: 1.1; }
+.hero-copy { max-width: 620px; margin: 0; color: var(--muted); font-size: 18px; }
+
+.workspace { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.tool-panel { padding: 26px; border: 1px solid #dbe4ea; border-radius: 8px; background: #fff; box-shadow: 0 8px 24px rgba(24, 49, 65, .06); }
+.panel-heading { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 24px; }
+.step-number { padding: 7px 8px; border-radius: 6px; color: var(--teal); background: #e4f4f4; font-size: 13px; font-weight: 700; }
+.panel-heading h2 { margin: 0 0 2px; font-size: 21px; }
+.panel-heading p, .hint { margin: 0; color: #72818c; font-size: 13px; }
+.field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+label { display: grid; gap: 7px; margin-bottom: 14px; color: #52616c; font-size: 13px; }
+input { width: 100%; padding: 11px 12px; border: 1px solid #cdd9e0; border-radius: 5px; color: var(--ink); background: #fff; font: inherit; }
+input:focus { border-color: var(--teal); outline: 2px solid #b7e3e2; }
+
+.primary-button { width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 16px; border: 0; border-radius: 5px; color: #fff; background: #125b7a; font-weight: 700; }
+.primary-button:hover { background: #0d4861; }
+.hint { margin-top: 12px; }
+
+.file-field { position: relative; display: block; margin-bottom: 12px; padding: 12px; border: 1px dashed #bdccd5; border-radius: 6px; }
+.file-field span { display: flex; align-items: center; gap: 8px; color: #365767; font-weight: 600; }
+.file-field input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+.file-field em { display: block; margin-top: 5px; overflow: hidden; color: #78909c; font-size: 12px; font-style: normal; text-overflow: ellipsis; white-space: nowrap; }
+
+.status { margin: 20px 0 0; padding: 12px 14px; border-radius: 6px; font-size: 14px; }
+.success { color: #176b48; background: #e8f6ef; }
+.failure { color: #9d342c; background: #fff0ef; }
+.seo-section { margin: 54px 0 0; padding-top: 28px; border-top: 1px solid var(--line); color: var(--muted); }
+.seo-section h2 { margin: 0 0 8px; color: #223645; font-size: 20px; }
+.seo-section p { max-width: 760px; margin: 0; }
+.security-row { display: flex; align-items: center; gap: 8px; margin-top: 18px; color: var(--teal); font-size: 13px; }
+footer { margin-top: 38px; color: #8a98a1; font-size: 12px; text-align: center; }
+
+@media (max-width: 760px) {
+  .page-shell { padding: 0 18px 36px; }
+  .site-header { height: 66px; }
+  .privacy-note { font-size: 0; }
+  .hero { padding: 48px 0 34px; }
+  .hero h1 { font-size: 38px; }
+  .hero-copy { font-size: 16px; }
+  .workspace, .field-grid { grid-template-columns: 1fr; }
+}
+</style>
