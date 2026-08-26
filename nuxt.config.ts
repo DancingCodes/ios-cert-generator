@@ -1,3 +1,5 @@
+const siteUrl = process.env.NUXT_PUBLIC_SITE_URL ?? 'https://ioscert.moonc.love'
+
 export default defineNuxtConfig({
   ssr: true,
   css: ['~/assets/scss/main.scss'],
@@ -13,7 +15,7 @@ export default defineNuxtConfig({
     },
   },
   site: {
-    url: 'https://ios-cert-generator.example.com',
+    url: siteUrl,
     name: 'iOS 证书生成工具',
   },
   nitro: {
