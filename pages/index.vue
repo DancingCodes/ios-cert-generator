@@ -72,9 +72,17 @@ async function generateP12() {
     const privateKey = forge.value.pki.privateKeyFromPem(keyPem)
     const der = forge.value.util.createBuffer(certBuffer as ArrayBuffer).getBytes()
     const certificate = forge.value.pki.certificateFromAsn1(forge.value.asn1.fromDer(der))
-    const p12Asn1 = forge.value.pkcs12.toPkcs12Asn1(privateKey, [certificate], p12Password.value, { algorithm: '3des' })
-    const bytes = forge.value.asn1.toDer(p12Asn1).getBytes()
-    download('ios-distribution.p12', bytes, 'application/x-pkcs12')
+    const p12Asn1 = forge.value.pkcs12.toPkcs12Asn1(privateKey, [certificate], p12Password.value, {
+      algorithm: '3des',
+      generateLocalKeyId: true,
+      friendlyName: 'iOS Distribution',
+    })
+    const p12Der = forge.value.asn1.toDer(p12Asn1).getBytes()
+    const p12Bytes = new Uint8Array(p12Der.length)
+    for (let i = 0; i < p12Der.length; i++) {
+      p12Bytes[i] = p12Der.charCodeAt(i)
+    }
+    download('ios-distribution.p12', p12Bytes, 'application/x-pkcs12')
     message.value = 'P12 已生成并下载。导入 HBuilderX 时填写相同的 P12 密码。'
   } catch {
     error.value = '生成失败，请确认私钥与 .cer 属于同一张证书。'
