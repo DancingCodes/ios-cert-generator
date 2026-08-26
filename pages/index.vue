@@ -8,8 +8,6 @@ const error = ref('')
 const privateKeyFile = ref<File | null>(null)
 const certificateFile = ref<File | null>(null)
 const p12Password = ref('')
-const commonName = ref('')
-const email = ref('')
 
 useHead({
   title: 'iOS 证书生成工具：在线生成 CSR 和 P12',
@@ -47,10 +45,7 @@ async function generateCsr() {
     })
     const csr = forge.value.pki.createCertificationRequest()
     csr.publicKey = keys.publicKey
-    csr.setSubject([
-      { name: 'commonName', value: commonName.value.trim() || 'iOS Distribution' },
-      ...(email.value.trim() ? [{ name: 'emailAddress', value: email.value.trim() }] : []),
-    ])
+    csr.setSubject([{ name: 'commonName', value: 'iOS Distribution' }])
     csr.sign(keys.privateKey, forge.value.md.sha256.create())
     download('CertificateSigningRequest.certSigningRequest', forge.value.pki.certificationRequestToPem(csr), 'application/pkcs10')
     download('ios-distribution-private.key', forge.value.pki.privateKeyToPem(keys.privateKey), 'application/x-pem-file')
@@ -102,7 +97,6 @@ async function generateP12() {
     <section class="workspace" aria-label="证书生成工具">
       <article class="tool-panel">
         <div class="panel-heading"><span class="step-number">01</span><div><h2>生成 CSR</h2><p>创建证书申请文件和配套私钥</p></div></div>
-        <div class="field-grid"><label>名称（可选）<input v-model="commonName" placeholder="iOS Distribution" /></label><label>邮箱（可选）<input v-model="email" type="email" placeholder="name@example.com" /></label></div>
         <button class="primary-button" :disabled="loading || !forge" @click="generateCsr"><Download :size="18" />{{ loading ? '处理中…' : '生成并下载 CSR' }}</button>
         <p class="hint">下载后将 CSR 上传到 Apple Developer 的 Certificates 页面。私钥只保存在你的设备上。</p>
       </article>
@@ -137,10 +131,10 @@ async function generateP12() {
 .brand-mark { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 9px; color: #fff; background: #125b7a; }
 .privacy-note { display: flex; align-items: center; gap: 6px; color: #557083; font-size: 13px; }
 
-.hero { max-width: 760px; padding: 70px 0 48px; }
+.hero { padding: 70px 0 48px; }
 .eyebrow { margin: 0 0 12px; color: var(--teal); font-size: 12px; font-weight: 700; letter-spacing: 0; }
 .hero h1 { margin: 0 0 18px; color: #102333; font-size: clamp(34px, 5vw, 56px); line-height: 1.1; }
-.hero-copy { max-width: 620px; margin: 0; color: var(--muted); font-size: 18px; }
+.hero-copy { margin: 0; color: var(--muted); font-size: 18px; }
 
 .workspace { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 .tool-panel { padding: 26px; border: 1px solid #dbe4ea; border-radius: 8px; background: #fff; box-shadow: 0 8px 24px rgba(24, 49, 65, .06); }
