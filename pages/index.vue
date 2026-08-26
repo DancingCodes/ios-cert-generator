@@ -21,8 +21,11 @@ onMounted(async () => {
   forge.value = (await import('node-forge')).default
 })
 
-function download(name: string, data: BlobPart, type = 'application/octet-stream') {
-  const url = URL.createObjectURL(new Blob([data], { type }))
+function download(name: string, data: BlobPart | Uint8Array, type = 'application/octet-stream') {
+  const blobData = typeof data === 'string' && type === 'application/x-pkcs12'
+    ? [Uint8Array.from(data, char => char.charCodeAt(0))]
+    : [data]
+  const url = URL.createObjectURL(new Blob(blobData, { type }))
   const anchor = document.createElement('a')
   anchor.href = url
   anchor.download = name
