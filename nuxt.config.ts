@@ -13,7 +13,7 @@ export default defineNuxtConfig({
     },
   },
   site: {
-    url: 'https://ioscert.moonc.love',
+    url: 'https://ioscert.dancingcodes.cn',
     name: 'iOS 证书生成工具',
   },
   nitro: {
